@@ -1,0 +1,37 @@
+#!/bin/bash
+
+function help() {
+    echo "Uso: yt-descargar [PATH].. [OPTION].."
+    echo "  -h: Muestra esto"
+    echo "  -a: Descarga audio"
+    echo "La ejecucion sigue hasta que se introduzca un valor vacio"
+}
+
+function download() { 
+    if [[ -d $1 ]]; then
+        args="-P $1" #Argumento de PATH para yt-dlp
+    fi
+
+    if [[ $1 == "-a" || $2 == "-a" ]]; then #El if y else suman a los argumentos los argumentos de yt-dlp para audio y video
+        args="$args -x --audio-format mp3 --audio-quality 0 --no-keep-video --audio-multistreams" 
+    else
+        args="$args --remux-video mp4"
+    fi
+    
+    while true; do
+        read valor
+        if [[ -n $valor ]]; then
+            nohup yt-dlp $args $valor > /dev/null 2>&1 &
+            # nohup ejecuta el comando en el fondo, quita el output, y evita posible señal de salida
+            # > /dev/null 2>&1 borra toda la output
+        else
+            break
+        fi
+    done
+}
+
+if [[ $1 == "-h" || $2 == "-h" ]]; then
+    help
+else
+    download $1 $2
+fi
