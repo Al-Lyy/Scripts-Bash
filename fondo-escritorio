@@ -35,7 +35,7 @@ else
             contador=0
             numframes=${#frames[@]}
             while true; do 
-                feh --bg-max --no-fehbg $dirgif${frames[$contador]}
+                feh --bg-fill --no-fehbg $dirgif${frames[$contador]}
                 sleep ${duration[$contador]}
                 contador=$((contador+1))
                 if [[ $contador -eq $numframes ]]; then # Si el contador llega al ultimo frame vuelve al primero
