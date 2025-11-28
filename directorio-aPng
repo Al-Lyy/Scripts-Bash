@@ -1,0 +1,11 @@
+#!/bin/bash
+
+mapfile -t contenidos < <( ls )
+for i in "${contenidos[@]}"; do
+    actual=$(identify -format '%m\n' $i) # Coge el tipo de imagen
+    if [[ $actual != "PNG" ]]; then
+        magick $i ${i:0:${#i}-4}".png"
+        #rm $i
+        # Descomenta esta linea por si quieres correr el riesgo de terminar nukeando un directorio inocente sin fotos
+    fi
+done
